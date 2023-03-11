@@ -9,7 +9,7 @@
  * that starts the plugin.
  *
  * @link              https://itsourov.com
- * @since             1.0.0
+ * @since             1.0.1
  * @package           Spg
  *
  * @wordpress-plugin
@@ -75,6 +75,7 @@ function spg_init_gateway_class()
 
             $this->gateway_url =  $this->get_option('gateway_url');
             $this->icon_url =  $this->get_option('icon_url');
+            $this->icon_url_in_gateway =  $this->get_option('icon_url_in_gateway');
             $this->icon = $this->icon_url;
 
 
@@ -124,6 +125,10 @@ function spg_init_gateway_class()
                     'title'       => 'Icon Url',
                     'type'        => 'url'
                 ),
+                'icon_url_in_gateway' => array(
+                    'title'       => 'Icon Url in gateway',
+                    'type'        => 'url'
+                ),
 
             );
         }
@@ -166,7 +171,7 @@ function spg_init_gateway_class()
             }
             return array(
                 'result' => 'success',
-                'redirect' => $this->gateway_url . '?invoice=' . $order_id . '&email=' . $order->get_billing_email() . '&price=' . $order->get_total(), // ???
+                'redirect' => $this->gateway_url . '?invoice=' . urlencode($order_id) . '&email=' . urlencode($order->get_billing_email()) . '&price=' . urlencode($order->get_total()) . '&fallbackUrl=' . urlencode(wc_get_checkout_url()) . '&icon=' . urlencode($this->icon_url_in_gateway), // ???
             );
         }
 
